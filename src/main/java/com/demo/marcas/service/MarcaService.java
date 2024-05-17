@@ -1,5 +1,6 @@
 package com.demo.marcas.service;
 
+import com.demo.marcas.dtos.request.CrearMarcaRequestDto;
 import com.demo.marcas.dtos.response.GetMarcasResponseDTO;
 import com.demo.marcas.dtos.response.MarcaDTO;
 import com.demo.marcas.mapper.MarcaMapper;
@@ -26,6 +27,16 @@ public class MarcaService {
         GetMarcasResponseDTO response = new GetMarcasResponseDTO();
         response.setMarcas(marcaDTO);
         return response;
+    }
+
+    //CrearMarcaRequestDto controla que se esté pasando una descripción valida, no permite vacio
+    public MarcaDTO crearMarca(CrearMarcaRequestDto request){
+        //convierte el request al modelo Marca
+        Marca nuevaMarca = marcaMapper.toModel(request);
+        //guarda el request formateado a Marca
+        nuevaMarca = marcaRepository.save(nuevaMarca);
+        //devuelve la nueva marca guardad con el formato a mostrar
+        return marcaMapper.toDTO(nuevaMarca);
     }
 
 }
